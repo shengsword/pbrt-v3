@@ -266,7 +266,7 @@ Interaction Sphere::Sample(const Interaction &ref, const Point2f &u,
     Float invSinThetaMax = 1 / sinThetaMax;
     Float cosThetaMax = std::sqrt(std::max((Float)0.f, 1 - sinThetaMax2));
 
-    Float cosTheta  = (cosThetaMax - 1) * u[0] + 1;
+    Float cosTheta  = (cosThetaMax - 1) * u[0] + 1; // random lerp from (cosThetaMax, 1.0)
     Float sinTheta2 = 1 - cosTheta * cosTheta;
 
     if (sinThetaMax2 < 0.00068523f /* sin^2(1.5 deg) */) {
