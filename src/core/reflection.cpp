@@ -68,6 +68,8 @@ Float FrDielectric(Float cosThetaI, Float etaI, Float etaT) {
 }
 
 // https://seblagarde.wordpress.com/2013/04/29/memo-on-fresnel-equations/
+// sjw: https://app.yinxiang.com/shard/s72/nl/15730711/8636e85d-761e-4795-9ba3-38ec6a3e53d1
+// 注意pbrt的etai=文章里面的ni, etak = nk
 Spectrum FrConductor(Float cosThetaI, const Spectrum &etai,
                      const Spectrum &etat, const Spectrum &k) {
     cosThetaI = Clamp(cosThetaI, -1, 1);
@@ -161,6 +163,7 @@ Spectrum SpecularTransmission::Sample_f(const Vector3f &wo, Vector3f *wi,
     *pdf = 1;
     Spectrum ft = T * (Spectrum(1.) - fresnel.Evaluate(CosTheta(*wi)));
     // Account for non-symmetry with transmission to different medium
+    // 光进入高ior的介质时，能量会被压缩，radiance会变大，因为角度变小了
     if (mode == TransportMode::Radiance) ft *= (etaI * etaI) / (etaT * etaT);
     return ft / AbsCosTheta(*wi);
 }
@@ -717,6 +720,8 @@ Spectrum BSDF::Sample_f(const Vector3f &woWorld, Vector3f *wiWorld,
         if (sampledType) *sampledType = BxDFType(0);
         return Spectrum(0);
     }
+
+    // random pick one bxdf which meet the types
     int comp =
         std::min((int)std::floor(u[0] * matchingComps), matchingComps - 1);
 
@@ -752,7 +757,7 @@ Spectrum BSDF::Sample_f(const Vector3f &woWorld, Vector3f *wiWorld,
     *wiWorld = LocalToWorld(wi);
 
     // Compute overall PDF with all matching _BxDF_s
-    if (!(bxdf->type & BSDF_SPECULAR) && matchingComps > 1)
+    if (!(bxdf->type & BSDF_SPECULAR) && matchingComps > 1) // if not specular
         for (int i = 0; i < nBxDFs; ++i)
             if (bxdfs[i] != bxdf && bxdfs[i]->MatchesFlags(type))
                 *pdf += bxdfs[i]->Pdf(wo, wi);

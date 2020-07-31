@@ -84,6 +84,7 @@ inline Spectrum FrSchlick(const Spectrum &R0, Float cosTheta) {
 
 // For a dielectric, R(0) = (eta - 1)^2 / (eta + 1)^2, assuming we're
 // coming from air..
+// when eta = 1.5, F0 = 0.04
 inline Float SchlickR0FromEta(Float eta) { return sqr(eta - 1) / sqr(eta + 1); }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -548,7 +549,8 @@ void DisneyMaterial::ComputeScatteringFunctions(SurfaceInteraction *si,
     Float specTint = specularTint->Evaluate(*si);
     Spectrum Cspec0 =
         Lerp(metallicWeight,
-             SchlickR0FromEta(e) * Lerp(specTint, Spectrum(1.), Ctint), c);
+             SchlickR0FromEta(e) * Lerp(specTint, Spectrum(1.), Ctint),
+             c); // lerp(0.04 * (ctint -> 1.0), c, metallic)
     Fresnel *fresnel =
         ARENA_ALLOC(arena, DisneyFresnel)(Cspec0, metallicWeight, e);
     si->bsdf->Add(

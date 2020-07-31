@@ -1324,7 +1324,7 @@ int main(int argc, char *argv[]) {
     std::vector<shape_t> shapes;
     std::vector<material_t> materials;
     std::string err;
-    if (!LoadObj(shapes, materials, err, objFilename, /* mtl_basepath */ nullptr,
+    if (!LoadObj(shapes, materials, err, objFilename, /*mtl_basepath*/ nullptr,
                  ptexQuads ? 0 : load_flags_t(triangulation))) {
         fprintf(stderr, "%s: errors loading OBJ file: %s\n", objFilename, err.c_str());
         return 1;

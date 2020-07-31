@@ -321,6 +321,9 @@ class SpecularReflection : public BxDF {
     const Fresnel *fresnel;
 };
 
+/**
+Perfect transmission
+**/
 class SpecularTransmission : public BxDF {
   public:
     // SpecularTransmission Public Methods

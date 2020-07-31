@@ -70,7 +70,7 @@ Spectrum UniformSampleAllLights(const Interaction &it, const Scene &scene,
             L += EstimateDirect(it, uScattering, *light, uLight, scene, sampler,
                                 arena, handleMedia);
         } else {
-            // Estimate direct lighting using sample arrays
+            // Estimate direct lighting using sample arrays // monte carlo spliting
             Spectrum Ld(0.f);
             for (int k = 0; k < nSamples; ++k)
                 Ld += EstimateDirect(it, uScatteringArray[k], *light,

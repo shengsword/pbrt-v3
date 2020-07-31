@@ -44,11 +44,12 @@ namespace pbrt {
 Spectrum PointLight::Sample_Li(const Interaction &ref, const Point2f &u,
                                Vector3f *wi, Float *pdf,
                                VisibilityTester *vis) const {
-    ProfilePhase _(Prof::LightSample);
+    ProfilePhase _(Prof::LightSample);    
     *wi = Normalize(pLight - ref.p);
     *pdf = 1.f;
     *vis =
         VisibilityTester(ref, Interaction(pLight, ref.time, mediumInterface));
+    // since I is radian intensity, convertint to E_pendicular 
     return I / DistanceSquared(pLight, ref.p);
 }
 

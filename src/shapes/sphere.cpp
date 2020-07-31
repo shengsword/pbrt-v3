@@ -243,7 +243,7 @@ Interaction Sphere::Sample(const Interaction &ref, const Point2f &u,
             *pdf = 0;
         else {
             // Convert from area measure returned by Sample() call above to
-            // solid angle measure.
+            // solid angle measure. (面积pdf转化为角面积pdf）
             wi = Normalize(wi);
             *pdf *= DistanceSquared(ref.p, intr.p) / AbsDot(intr.n, -wi);
         }

@@ -95,7 +95,7 @@ Spectrum PathIntegrator::Li(const RayDifferential &r, const Scene &scene,
                 VLOG(2) << "Added Le -> L = " << L;
             } else {
                 for (const auto &light : scene.infiniteLights)
-                    L += beta * light->Le(ray);
+                    L += beta * light->Le(ray); // background light
                 VLOG(2) << "Added infinite area lights -> L = " << L;
             }
         }

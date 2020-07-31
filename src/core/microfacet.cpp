@@ -151,7 +151,7 @@ Float BeckmannDistribution::D(const Vector3f &wh) const {
                                   Sin2Phi(wh) / (alphay * alphay))) /
            (Pi * alphax * alphay * cos4Theta);
 }
-
+// GGX_distribution
 Float TrowbridgeReitzDistribution::D(const Vector3f &wh) const {
     Float tan2Theta = Tan2Theta(wh);
     if (std::isinf(tan2Theta)) return 0.;
